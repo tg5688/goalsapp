@@ -19,12 +19,12 @@ pipeline {
       steps {
         sh 'echo "Push frontend."'
         sh 'docker push tg5688/k8s-goalsapp-frontend:v2'
-        sh 'docker tag tg5688/k8s-goalsapp-frontend:v2 k8s-goalsapp-frontend:latest'
+        sh 'docker tag tg5688/k8s-goalsapp-frontend:v2 tg5688/k8s-goalsapp-frontend:latest'
         sh 'docker push tg5688/k8s-goalsapp-frontend:latest'
 
         sh 'echo "Push backend."'
         sh 'docker push tg5688/k8s-goalsapp-backend:v2'
-        sh 'docker tag tg5688/k8s-goalsapp-backend:v2 k8s-goalsapp-backend:latest'
+        sh 'docker tag tg5688/k8s-goalsapp-backend:v2 tg5688/k8s-goalsapp-backend:latest'
         sh 'docker push tg5688/k8s-goalsapp-backend:latest'
       }
     }
