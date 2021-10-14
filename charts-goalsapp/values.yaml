@@ -1,0 +1,9 @@
+deployment_frontend:
+  image: "tg5688/k8s-goalsapp-frontend"
+  tag: "v1"
+deployment_backend:
+  image: "tg5688/k8s-goalsapp-backend"
+  tag: "v1"
+name: goalsapp
+backend_replica: 2
+frontend_replica: 2

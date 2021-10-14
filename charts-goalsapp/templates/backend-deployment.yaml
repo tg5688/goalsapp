@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.name }}-backend
+  labels:
+    app: {{ .Values.name }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Values.name }}-backend
+      tier: backend
+  replicas: {{ .Values.backend_replica }}
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.name }}-backend
+        tier: backend
+    spec:
+      containers:
+      - image: {{ .Values.deployment_backend.image }}:{{ .Values.deployment_backend.tag }}
+        name: {{ .Values.name }}-backend
+        env:
+        - name: MONGODB_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.name }}-secret
+              key: user
+        - name: MONGODB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.name }}-secret
+              key: password
+        ports:
+        - containerPort: 8000
+        readinessProbe:
+          httpGet:
+            path: /goals
+            port: 8000
+          initialDelaySeconds: 20
+          periodSeconds: 20
+          timeoutSeconds: 2
+        livenessProbe:
+          httpGet:
+            path: /goals
+            port: 8000
+          initialDelaySeconds: 30
+          periodSeconds: 20
+          timeoutSeconds: 2
+        resources:
+          requests:
+            cpu: "250m"
+            memory: "256M"
+          limits:
+            cpu: "1000m"
+            memory: "1000M"        
